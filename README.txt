@@ -10,7 +10,7 @@ http://api.icndb.com/jokes.
 ##########INSTRUCTIONS to RUN the gowebserver within the HOST########
 #######MAKESURE you have the connectivity repos..##########
 
-# Go to you rhome and create workingdir named "GoWebSrv"
+# Go to you home dir
 cd /home/smuvva/
 # Checkout git
 git clone https://github.com/srimuvva/GoSampleWebServer.git
@@ -21,7 +21,7 @@ cd GoSampleWebServer
 
 # Run webserv using below cmd, we dont specify port, server uses 8080 port.
 [root@mapi09 GoSampleWebServer]# ./webserv -port 5678
-Now from any machine issue command curl<IP>:<Port> should return Joke.
+Now from any machine issue command curl<IP>:<Port> should return Joke. If you got empty respose that could be because of above said limitation that server does not support UTF8 unicode firstname and last names. Try more to get proper response.
 
 
 
