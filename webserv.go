@@ -7,6 +7,7 @@ import (
     "io/ioutil"
     "flag"
     "strconv"
+    "strings"
 )
 
 // Struct to de-serialize json ouput of http://uinames.com/api/
@@ -41,15 +42,22 @@ func handler(w http.ResponseWriter, r *http.Request) {
     if err = json.Unmarshal(body, &person); err != nil {
         panic(err)
     }
-    joke_url := fmt.Sprintf("http://api.icndb.com/jokes/random?firstName=%s&lastName=%s",person.FirstName,person.SurName)
+    
+    // Jokes server does not like the UTF8 firstname/lastname. So we use the
+    // template name for firstname and lastname and then replace the fname and lname with
+    // persona.FirtName and person.LastName. This way our program supports the special UTF8 names as well
+    joke_url := "http://api.icndb.com/jokes/random?firstName=%fn&lastName=%ln"
     resp, err = http.Get(joke_url)
     body, err = ioutil.ReadAll(resp.Body)
     var resp2 Resp
     if err = json.Unmarshal(body, &resp2); err != nil {
         panic(err)
     }
+    res := strings.NewReplacer("%fn",person.FirstName,"%ln",person.SurName)
+    // Replace all pairs.
+    result := res.Replace(resp2.Value.Joke) 
     // Writeback response string.
-    fmt.Fprintf(w, resp2.Value.Joke)
+    fmt.Fprintf(w, result)
 }
 
 func main() {
