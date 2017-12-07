@@ -54,7 +54,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
         panic(err)
     }
     res := strings.NewReplacer("%fn",person.FirstName,"%ln",person.SurName)
-    // Replace all pairs.
+    // Replace the fn and ln from response with actual firtname and lastname.
     result := res.Replace(resp2.Value.Joke) 
     // Writeback response string.
     fmt.Fprintf(w, result)
